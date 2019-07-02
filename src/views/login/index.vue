@@ -18,7 +18,7 @@
                     placeholder="请输入用户名">
           <span slot="prefix">
             <svg-icon icon-class="user" class="color-main"></svg-icon>
-          </span>
+          </span>login_center_bg
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -44,6 +44,13 @@
       </el-form>
     </el-card>
     <img :src="login_center_bg" class="login-center-layout">
+    <el-dialog
+          :visible.sync="dialogVisible"
+          width="30%">
+          <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogCancel">现在进入</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
