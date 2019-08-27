@@ -88,7 +88,8 @@
         loading: false,
         pwdType: 'password',
         login_center_bg,
-        dialogVisible:false
+        dialogVisible:false,
+        supportDialogVisible:false
       }
     },
     methods: {
@@ -123,7 +124,7 @@
       dialogConfirm(){
         this.dialogVisible =false;
         setSupport(true);
-        window.location.href=SupportUrl;
+        // window.location.href=SupportUrl;
       },
       dialogCancel(){
         this.dialogVisible = false;
