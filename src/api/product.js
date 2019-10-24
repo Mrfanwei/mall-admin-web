@@ -1,5 +1,7 @@
 import request from '@/utils/request'
+import Cookies from 'js-cookie'
 export function fetchList(params) {
+  params.storeName = Cookies.get('storeName')
   return request({
     url:'/product/list',
     method:'get',
@@ -48,6 +50,7 @@ export function updatePublishStatus(params) {
 }
 
 export function createProduct(data) {
+  data.storeName = Cookies.get('storeName')
   return request({
     url:'/product/create',
     method:'post',
@@ -56,6 +59,7 @@ export function createProduct(data) {
 }
 
 export function updateProduct(id,data) {
+  data.storeName = Cookies.get('storeName')
   return request({
     url:'/product/update/'+id,
     method:'post',

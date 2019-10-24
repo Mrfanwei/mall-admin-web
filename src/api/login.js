@@ -1,6 +1,8 @@
 import request from '@/utils/request'
+import Cookies from 'js-cookie'
 
 export function login(username, password) {
+  Cookies.set('storeName', username)
   return request({
     url: '/admin/login',
     method: 'post',

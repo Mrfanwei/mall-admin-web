@@ -36,38 +36,28 @@
           </span>
           </el-input>
         </el-form-item>
-        <el-form-item style="margin-bottom: 60px">
-          <el-button style="width: 100%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
+        <el-form-item style="margin-bottom: 60px;text-align: center">
+          <el-button style="width: 45%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
+          </el-button>
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <img :src="login_center_bg" class="login-center-layout">
-    <el-dialog
-          :visible.sync="dialogVisible"
-          width="30%">
-          <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogCancel">现在进入</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
   import {isvalidUsername} from '@/utils/validate';
-  import {setSupport,getSupport,SupportUrl} from '@/utils/support';
+  import {setSupport,getSupport,setCookie,getCookie} from '@/utils/support';
   import login_center_bg from '@/assets/images/login_center_bg.png'
 
   export default {
     name: 'login',
     data() {
       const validateUsername = (rule, value, callback) => {
-        if (!isvalidUsername(value)) {
-          callback(new Error('请输入正确的用户名'))
-        } else {
-          callback()
-        }
+        callback()
       };
       const validatePass = (rule, value, callback) => {
         if (value.length < 3) {
@@ -92,6 +82,16 @@
         supportDialogVisible:false
       }
     },
+    created() {
+      this.loginForm.username = getCookie("username");
+      this.loginForm.password = getCookie("password");
+      if(this.loginForm.username === undefined||this.loginForm.username==null||this.loginForm.username===''){
+        this.loginForm.username = 'admin';
+      }
+      if(this.loginForm.password === undefined||this.loginForm.password==null){
+        this.loginForm.password = '';
+      }
+    },
     methods: {
       showPwd() {
         if (this.pwdType === 'password') {
@@ -103,14 +103,16 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            let isSupport = getSupport();
-            if(isSupport===undefined||isSupport==null){
-              this.dialogVisible =true;
-              return;
-            }
+            // let isSupport = getSupport();
+            // if(isSupport===undefined||isSupport==null){
+            //   this.dialogVisible =true;
+            //   return;
+            // }
             this.loading = true;
             this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false;
+              setCookie("username",this.loginForm.username,15);
+              setCookie("password",this.loginForm.password,15);
               this.$router.push({path: '/'})
             }).catch(() => {
               this.loading = false
@@ -121,10 +123,12 @@
           }
         })
       },
+      handleTry(){
+        this.dialogVisible =true
+      },
       dialogConfirm(){
         this.dialogVisible =false;
         setSupport(true);
-        // window.location.href=SupportUrl;
       },
       dialogCancel(){
         this.dialogVisible = false;
