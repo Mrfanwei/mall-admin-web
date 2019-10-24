@@ -101,7 +101,8 @@
     unit: '',
     usePointLimit: 0,
     verifyStatus: 0,
-    weight: 0
+    weight: 0,
+    storeName: 'admin'
   };
   export default {
     name: 'ProductDetail',
